@@ -1,5 +1,5 @@
 # 1. import libraries
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from app.model.model import __version__ as model_version
 from app.model.model import classifiers
 from app.model.model import BankNote
@@ -16,7 +16,14 @@ def index():
 
 # 4. Prediction
 @app.post('/predict')
-def predict_banknote(data:BankNote, choice: int = 1):
+def predict_banknote(choice: int, data: BankNote = Body(
+    {
+        "variance": 0,
+        "skewness": 0,
+        "curtosis": 0,
+        "entropy": 0
+    }
+)):
 
     classifier_names = []
     for index, clf in enumerate(classifiers):
